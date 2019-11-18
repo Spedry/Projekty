@@ -1,11 +1,14 @@
 package sk.Peter_Tokovics.Odosiealnie_HTTP;
 
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.ClassNotFoundException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -27,12 +30,50 @@ public class Odosielanie {
         server.createContext("/test", new MyHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
+
     }
 
     static class MyHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
+            ServerSocket server = null;
+            URL obj = new URL("http://localhost:8000/test");
+            HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
 
+            /*final String POST_PARAMS = "{\n" + "\"userId\": 101,\r\n" +
+                    "    \"id\": 101,\r\n" +
+                    "    \"title\": \"Test Title\",\r\n" +
+                    "    \"body\": \"Test Body\"" + "\n}";
+            System.out.println(POST_PARAMS);*/
+            //String response = "This is the response";
+            OutputStream os = t.getResponseBody();
+            //os.write(POST_PARAMS.getBytes());
+            //t.sendResponseHeaders(200, response.length());
+            //os.write(response.getBytes());
+            Socket socket = server.accept();
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            //convert ObjectInputStream object to String
+            try {
+                String message = (String) ois.readObject();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            os.flush();
+            os.close();
+
+            /*if (responseCode == HttpURLConnection.HTTP_CREATED) { //success
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                        postConnection.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                // print result
+                System.out.println(response.toString());
+
+            }*/
             /*URL obj = new URL("http://localhost:8000/test");
             HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
             postConnection.setDoOutput(true);
@@ -59,7 +100,7 @@ public class Odosielanie {
             } else {
                 System.out.println("POST NOT WORKED");
             }*/
-            URL obj = new URL("http://localhost:8000/test");
+            /*URL obj = new URL("http://localhost:8000/test");
             HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
 
             //String response = "This is the response";
@@ -84,10 +125,11 @@ public class Odosielanie {
             } else {
                 System.out.println("POST NOT WORKED");
             }
-            os.close();
+            os.close();*/
+
+
         }
 
     }
-
 }
 
