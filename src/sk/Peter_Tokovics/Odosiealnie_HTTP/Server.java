@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 // Each Client Connection will be managed in a dedicated Thread
 public class Server implements Runnable{
 
-    static final File WEB_ROOT = new File("D:\\Java\\Projekty\\src\\sk\\Peter_Tokovics\\Odosiealnie_HTTP\\lol");
+    static final File WEB_ROOT = new File("src\\sk\\Peter_Tokovics\\Odosiealnie_HTTP\\lol");
     static final String DEFAULT_FILE = "index.html";
     static final String FILE_NOT_FOUND = "404.html";
     static final String METHOD_NOT_SUPPORTED = "not_supported.html";
