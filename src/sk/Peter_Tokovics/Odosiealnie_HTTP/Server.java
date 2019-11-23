@@ -22,11 +22,11 @@ import java.util.StringTokenizer;
 // Each Client Connection will be managed in a dedicated Thread
 public class Server implements Runnable{
 
-    static final File WEB_ROOT = new File("src\\sk\\Peter_Tokovics\\Odosiealnie_HTTP\\lol");
-    static final String DEFAULT_FILE = "index.html";
+    static final File WEB_ROOT = new File("src\\sk\\Peter_Tokovics\\Server\\Html_Chat");
+    static final String DEFAULT_FILE = "index2.html";
     static final String FILE_NOT_FOUND = "404.html";
     static final String METHOD_NOT_SUPPORTED = "not_supported.html";
-    // port to listen connection
+// port to listen connection
     static final int PORT = 8000;
 
     // verbose mode
@@ -83,7 +83,7 @@ public class Server implements Runnable{
             String method = parse.nextToken().toUpperCase(); // we get the HTTP method of the client
             // we get file requested
             fileRequested = parse.nextToken().toLowerCase();
-
+            System.out.println(fileRequested);
             // we support only GET and HEAD methods, we check
             if (!method.equals("GET")  &&  !method.equals("HEAD")) {
                 if (verbose) {
