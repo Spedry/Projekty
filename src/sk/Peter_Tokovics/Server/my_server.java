@@ -134,7 +134,7 @@ public class my_server implements Runnable{
                     vystup.flush(); // vyprázdni character output stream buffer
 
                     String tabCell;
-                    Funkcie.write(vstup);
+                    //Funkcie.write(vstup);
                     while ((tabCell = vstup.readLine()) != null) { //rob dokým nedojdeš na koniec
                         System.out.println(tabCell);
                         dataVystup.write(fileData, 0, fileLength);
