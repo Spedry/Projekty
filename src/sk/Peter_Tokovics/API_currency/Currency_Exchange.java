@@ -16,13 +16,13 @@ public class Currency_Exchange {
             URL url = new URL("http://www.apilayer.net/api/live?access_key=131931da1dd2633f84634ca6c79fc7c7&format=1");
             BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
             String str = "";
-            //while (null != (str = br.readLine())) {
-                //System.out.println(str);
+            while (null != (str = br.readLine())) {
+                System.out.println(str);
 
-                JSONObject json = new JSONObject(br);
-                String USD = json.getString("USDAED");
-            System.out.println(USD);
-            //}
+                //JSONObject json = new JSONObject(br);
+                //String USD = json.getString("USDAED");
+            //System.out.println(USD);
+            }
             //JsonReader jsonReader = Json.createReader(...);
             //JsonObject object = jsonReader.readObject();
             //jsonReader.close();
