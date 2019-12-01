@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 //import org.json.simple.JSONObject;
 //import org.json.JSONString;
-import org.json.*;
+//import org.json.*;
 public class Currency_Exchange {
 
 
