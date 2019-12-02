@@ -1,3 +1,5 @@
+package sk.Peter_Tokovics.Lifo;
+
 import java.util.Scanner;
 
 class ZasobnikAny {
@@ -12,12 +14,12 @@ class ZasobnikAny {
     }
 }
 
-class Zasobník {
+class Zasobnik {
      int stack[];
      int top;
      int len;
 
-     Zasobník() {
+     Zasobnik() {
          this.stack = new int[20];
          this.top = 0;
          this.len = this.stack.length;
@@ -63,7 +65,7 @@ class Zasobník {
 public class Lifo {
 
     public static void main(String[] args) {
-        Zasobník Ammo = new Zasobník();
+        Zasobnik Ammo = new Zasobnik();
         while(true) {
             Scanner Read = new Scanner(System.in);  // Create a Scanner object
             System.out.println("Zadaj hodnotu");

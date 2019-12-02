@@ -3,7 +3,6 @@ package sk.Peter_Tokovics.disc;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.*;
 
 
@@ -227,7 +226,7 @@ public class disc {
     private static void format() {
         for (int i = 0; i < bloky;i++) {
             disc[i][0] = 'f';
-            for (int j = 1; j < velkost; j++) {
+            for (int j = 2; j < velkost; j++) {
                 disc[i][j] = '-';
             }
         }
@@ -249,7 +248,7 @@ public class disc {
         int input = sc.nextInt();
         for (int i = 0; i < velkost; i++) {
             if (disc[input][i] == '-') break;
-            else System.out.println();
+            else System.out.print(disc[input][i]);
         }
     }
 
