@@ -9,7 +9,7 @@ import java.net.URL;
 public class Exchange {
 
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         // TODO Auto-generated method stub
 
         try {
