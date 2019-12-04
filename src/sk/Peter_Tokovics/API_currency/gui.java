@@ -49,7 +49,7 @@ public class gui extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Add contents to the window.
-        frame.add(new pripravGui());
+        //frame.add(new pripravGui());
 
         //Display the window.
         frame.pack();
