@@ -19,13 +19,17 @@ public class ExchangeApp {
             @Override
             public void actionPerformed(ActionEvent e) {
             double value, output, minus;
+            String getText, to;
             DecimalFormat df = new DecimalFormat("#.##");
-            String to;
-            value = Double.parseDouble(currencyInput.getText());
-            to = (String) toWhat.getSelectedItem();
-            minus = exchangeTo(to);
-            output = value * minus;
-            show.setText("USD= " + value + "\n" + to + "= " + df.format(output));
+            getText = currencyInput.getText();
+            if (getText.equals("")) show.setText("ZADAJTE \n SUMU");
+            else {
+                value = Double.parseDouble(getText);
+                to = (String) toWhat.getSelectedItem();
+                minus = exchangeTo(to);
+                output = value * minus;
+                show.setText("USD= " + value + "\n" + to + "= " + df.format(output));
+            }
             }
         });
     }
