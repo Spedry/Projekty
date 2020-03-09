@@ -11,6 +11,12 @@ public class Hall extends Queue implements Runnable {
         this.howOften = howOften;
     }
 
+    public void changeVar(int limit, int howMany, int howOften) {
+        this.limit = limit;
+        this.howMany = howMany;
+        this.howOften = howOften;
+    }
+
     Random rand = new Random();
 
     @Override

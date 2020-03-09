@@ -7,6 +7,10 @@ public class Queue implements Runnable {
         this.limit = limit;
     }
 
+    public void changeVar(int limit) {
+        this.limit = limit;
+    }
+
     public void board(int cap) {
         peopleInLine -= cap;
     }

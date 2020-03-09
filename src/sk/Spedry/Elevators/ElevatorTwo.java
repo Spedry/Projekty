@@ -12,6 +12,12 @@ public class ElevatorTwo extends ElevatorAbs implements Runnable{
         threadQueue.start();
     }
 
+    public void changeVar(int cap, int time, int limit) {
+        this.cap = cap;
+        this.time = time;
+        queue.changeVar(limit);
+    }
+
     public void boarTheElevator() {
         if (queue.peopleInLine >= cap) {
             peopleIn = cap;

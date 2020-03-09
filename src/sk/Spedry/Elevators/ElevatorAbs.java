@@ -11,6 +11,11 @@ public abstract class ElevatorAbs implements Runnable {
         this.working = true;
     }
 
+    public void changeVar(int cap, int time) {
+        this.cap = cap;
+        this.time = time;
+    }
+
     public void boarTheElevator() {
 
     }

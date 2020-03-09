@@ -15,6 +15,12 @@ public class ElevatorOne extends ElevatorAbs implements Runnable{
         threadHall.start();
     }
 
+    public void changeVar(int cap, int time, int limit, int howMany, int howOften) {
+        this.cap = cap;
+        this.time = time;
+        hall.changeVar(limit, howMany, howOften);
+    }
+
     public void boarTheElevator() {
         if (hall.peopleInLine >= cap) {
             peopleIn = cap;
