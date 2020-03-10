@@ -4,6 +4,7 @@ public abstract class ElevatorAbs implements Runnable {
 
     int cap, time;
     boolean working;
+    boolean exit = false;
 
     public ElevatorAbs(int cap, int time) {
         this.cap = cap;
@@ -18,6 +19,22 @@ public abstract class ElevatorAbs implements Runnable {
 
     public void boarTheElevator() {
 
+    }
+
+    public int getCap() {
+        return cap;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public boolean isWorking() {
+        return working;
+    }
+
+    public void stop() {
+        this.exit = true;
     }
 
     @Override

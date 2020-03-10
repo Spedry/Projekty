@@ -2,7 +2,7 @@ package sk.Spedry.Elevators;
 
 public class Queue implements Runnable {
     int peopleInLine, limit;
-
+    boolean exit = false;
     public Queue(int limit) {
         this.limit = limit;
     }
@@ -23,9 +23,17 @@ public class Queue implements Runnable {
         return peopleInLine;
     }
 
+    public int getLimit() {
+        return limit;
+    }
+
+    public void stop() {
+        this.exit = true;
+    }
+
     @Override
     public void run() {
-        while(true) {
+        while(!exit) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -34,5 +42,6 @@ public class Queue implements Runnable {
             if (peopleInLine != 0)
             System.out.println("ppl in queue: " + peopleInLine);
         }
+        System.out.println("thread queue end");
     }
 }

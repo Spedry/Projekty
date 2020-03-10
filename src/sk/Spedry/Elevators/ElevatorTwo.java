@@ -35,7 +35,7 @@ public class ElevatorTwo extends ElevatorAbs implements Runnable{
     @Override
     public void run() {
         System.out.println("ElevatorTwo Thread: " + Thread.currentThread().getName());
-        while (true) {
+        while (!exit) {
             if (queue.peopleInLine == 0) {
                 try {
                     System.out.println("elevatorTwo is waiting");
@@ -56,6 +56,7 @@ public class ElevatorTwo extends ElevatorAbs implements Runnable{
                 }
             }
         }
+        System.out.println("thread elevatorTwo end");
     }
 }
 

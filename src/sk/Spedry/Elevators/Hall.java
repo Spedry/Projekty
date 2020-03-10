@@ -17,12 +17,20 @@ public class Hall extends Queue implements Runnable {
         this.howOften = howOften;
     }
 
+    public int getHowMany() {
+        return howMany;
+    }
+
+    public int getHowOften() {
+        return howOften;
+    }
+
     Random rand = new Random();
 
     @Override
     public void run() {
         System.out.println("Hall Thread: " + Thread.currentThread().getName());
-        while (peopleInLine < limit) {
+        while (!exit) {
             this.peopleInLine += rand.nextInt(howMany) + 1;
             System.out.println("ppl in hall: " + peopleInLine);
             try {
@@ -31,8 +39,6 @@ public class Hall extends Queue implements Runnable {
                 e.printStackTrace();
             }
         }
-        System.out.println("Limit bol prekročený");
+        System.out.println("thread hall end");
     }
-
-
 }

@@ -41,7 +41,7 @@ public class ElevatorOne extends ElevatorAbs implements Runnable{
         Thread thread1 = new Thread(elevatorTwo);
         thread1.start();
         System.out.println("ElevatorOne Thread: " + Thread.currentThread().getName());
-        while (true) {
+        while (!exit) {
             if (hall.peopleInLine == 0) {
                 try {
                     System.out.println("elevatorOne is waiting");
@@ -62,5 +62,6 @@ public class ElevatorOne extends ElevatorAbs implements Runnable{
                 }
             }
         }
+        System.out.println("thread elevatorOne end");
     }
 }
