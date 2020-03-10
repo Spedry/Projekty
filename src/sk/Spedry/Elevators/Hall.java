@@ -29,10 +29,18 @@ public class Hall extends Queue implements Runnable {
 
     @Override
     public void run() {
+        int rnd, left;
         System.out.println("Hall Thread: " + Thread.currentThread().getName());
         while (!exit) {
-            this.peopleInLine += rand.nextInt(howMany) + 1;
-            System.out.println("ppl in hall: " + peopleInLine);
+            if (limit > (peopleInLine + (rnd = rand.nextInt(howMany) + 1))) this.peopleInLine += rnd;
+            else {
+                left = limit - (peopleInLine + rnd);
+                peopleInLine = limit;
+                System.out.println(limit + "-" + peopleInLine + "+" + rnd + "=" + left);
+                System.out.println("limit bol prekročený");
+                //System.out.println("muselo odísť: " + left + " ludí");
+            }
+            //System.out.println("ppl in hall: " + peopleInLine);
             try {
                 Thread.sleep(howOften * 1000);
             } catch (InterruptedException e) {

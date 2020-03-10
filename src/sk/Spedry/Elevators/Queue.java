@@ -39,8 +39,8 @@ public class Queue implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (peopleInLine != 0)
-            System.out.println("ppl in queue: " + peopleInLine);
+            //if (peopleInLine != 0)
+            //System.out.println("ppl in queue: " + peopleInLine);
         }
         System.out.println("thread queue end");
     }

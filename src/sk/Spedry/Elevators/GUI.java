@@ -12,19 +12,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.layout.VBox;
-
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 
@@ -33,11 +26,10 @@ public class GUI extends Application{
 
     Stage window; // celé okno
     Scene win; // vnútro okna
-    private ScheduledExecutorService scheduledExecutorService;
     final int WINDOW_SIZE = 10;
     private static Text txtHall, txtElOne, txtQueue, txtElTwo;
 
-    static ElevatorOne elevatorOne = new ElevatorOne(5,6,50,4,4);
+    static ElevatorOne elevatorOne = new ElevatorOne(5,6, 15, 11,50,4,4);
 
     static Thread thread = new Thread(elevatorOne);
 
@@ -51,9 +43,9 @@ public class GUI extends Application{
 
     public void set() {
         txtHall.setText(Integer.toString(elevatorOne.hall.getPeopleInLine()));
-        txtElOne.setText(Integer.toString(elevatorOne.getPeopleIn()));
-        txtQueue.setText(Integer.toString(elevatorOne.elevatorTwo.queue.getPeopleInLine()));
-        txtElTwo.setText(Integer.toString(elevatorOne.elevatorTwo.getPeopleIn()));
+        txtElOne.setText(elevatorOne.getPeopleIn());
+        txtQueue.setText(Integer.toString(ElevatorOne.elevatorTwo.queue.getPeopleInLine()));
+        txtElTwo.setText(ElevatorOne.elevatorTwo.getPeopleIn());
     }
 
     // telo app
@@ -88,29 +80,19 @@ public class GUI extends Application{
         GridPane.setConstraints(pplInElevatorTwo, 2, 1);
         GridPane.setConstraints(txtElTwo, 3, 1);
 
+
         gridPane.getChildren().addAll(pplInHall, txtHall, pplInElevatorOne, txtElOne, pplInQueue, txtQueue, pplInElevatorTwo, txtElTwo);
 
-        Thread thread = new Thread(new Runnable() {
+        Thread thread = new Thread(() -> {
+            Runnable updater = () -> set();
 
-            @Override
-            public void run() {
-                Runnable updater = new Runnable() {
-
-                    @Override
-                    public void run() {
-                        set();
-                    }
-                };
-
-                while (true) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                    }
-
-                    // UI update is run on the Application thread
-                    Platform.runLater(updater);
+            while (true) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
                 }
+
+                Platform.runLater(updater);
             }
         });
         thread.setDaemon(true);
@@ -142,32 +124,62 @@ public class GUI extends Application{
         GridPane.setConstraints(textFieldRychlostsOne, 3, 6);
 
         Label labelQueueLimit = new Label("Limit queue: ");
-        TextField textFielQueueLimit = new TextField(Integer.toString(elevatorOne.elevatorTwo.queue.getLimit()));
+        TextField textFielQueueLimit = new TextField(Integer.toString(ElevatorOne.elevatorTwo.queue.getLimit()));
         GridPane.setConstraints(labelQueueLimit, 0, 8);
         GridPane.setConstraints(textFielQueueLimit, 1, 8);
 
         Label labelCapTwo = new Label("Max ludí v E. 2: ");
-        TextField textFieldCapTwo = new TextField(Integer.toString(elevatorOne.elevatorTwo.getCap()));
+        TextField textFieldCapTwo = new TextField(Integer.toString(ElevatorOne.elevatorTwo.getCap()));
         GridPane.setConstraints(labelCapTwo, 2, 7);
         GridPane.setConstraints(textFieldCapTwo, 3, 7);
 
         Label labelRychlostTwo = new Label("Rýchlosť E. 2: ");
-        TextField textFieldRychlostsTwo = new TextField(Integer.toString(elevatorOne.elevatorTwo.getTime()));
+        TextField textFieldRychlostsTwo = new TextField(Integer.toString(ElevatorOne.elevatorTwo.getTime()));
         GridPane.setConstraints(labelRychlostTwo, 2, 8);
         GridPane.setConstraints(textFieldRychlostsTwo, 3, 8);
 
+        Label labelChanceOne = new Label("Šanca na pokazenie E. 1: ");
+        TextField textFieldChanceOne = new TextField(Integer.toString(elevatorOne.getChance()));
+        GridPane.setConstraints(labelChanceOne, 0, 9);
+        GridPane.setConstraints(textFieldChanceOne, 1, 9);
+
+        Label labelChanceTwo = new Label("Šanca na pokazenie E. 2: ");
+        TextField textFieldChanceTwo = new TextField(Integer.toString(ElevatorOne.elevatorTwo.getChance()));
+        GridPane.setConstraints(labelChanceTwo, 2, 9);
+        GridPane.setConstraints(textFieldChanceTwo, 3, 9);
+
+        Label labelRepairOne = new Label("Rýchlosť opravi E. 2: ");
+        TextField textFieldRepairOne = new TextField(Integer.toString(elevatorOne.getRepair()));
+        GridPane.setConstraints(labelRepairOne, 0, 10);
+        GridPane.setConstraints(textFieldRepairOne, 1, 10);
+
+        Label labelRepairTwo = new Label("Rýchlosť opravi E. 2: ");
+        TextField textFieldRepairTwo = new TextField(Integer.toString(ElevatorOne.elevatorTwo.getRepair()));
+        GridPane.setConstraints(labelRepairTwo, 2, 10);
+        GridPane.setConstraints(textFieldRepairTwo, 3, 10);
+
         gridPane.getChildren().addAll(labelHowMany, textFieldHowMany, labelHowOften, textFieldHowOften, labelHallLimit, textFieldHallLimit,
                 labelCapOne, textFieldCapOne, labelRychlostOne, textFieldRychlostsOne, labelQueueLimit, textFielQueueLimit, labelCapTwo, textFieldCapTwo,
-                labelRychlostTwo, textFieldRychlostsTwo);
+                labelRychlostTwo, textFieldRychlostsTwo, labelChanceOne, textFieldChanceOne, labelChanceTwo, textFieldChanceTwo, labelRepairOne, textFieldRepairOne,
+                labelRepairTwo, textFieldRepairTwo);
 
         Button button = new Button("Set variables");
         button.setOnAction(e -> {
-            elevatorOne.changeVar(Integer.parseInt(textFieldCapOne.getText()), Integer.parseInt(textFieldRychlostsOne.getText()),
-                    Integer.parseInt(textFieldHallLimit.getText()), Integer.parseInt(textFieldHowMany.getText()), Integer.parseInt(textFieldHowOften.getText()));
-            ElevatorOne.elevatorTwo.changeVar(Integer.parseInt(textFieldCapTwo.getText()), Integer.parseInt(textFieldRychlostsTwo.getText()), Integer.parseInt(textFielQueueLimit.getText()));
+            elevatorOne.changeVar(Integer.parseInt(textFieldCapOne.getText()),
+                    Integer.parseInt(textFieldRychlostsOne.getText()),
+                    Integer.parseInt(textFieldChanceOne.getText()),
+                    Integer.parseInt(textFieldRepairOne.getText()),
+                    Integer.parseInt(textFieldHallLimit.getText()),
+                    Integer.parseInt(textFieldHowMany.getText()),
+                    Integer.parseInt(textFieldHowOften.getText()));
+            ElevatorOne.elevatorTwo.changeVar(Integer.parseInt(textFieldCapTwo.getText()),
+                    Integer.parseInt(textFieldRychlostsTwo.getText()),
+                    Integer.parseInt(textFieldChanceTwo.getText()),
+                    Integer.parseInt(textFieldRepairTwo.getText()),
+                    Integer.parseInt(textFielQueueLimit.getText()));
         });
         button.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setConstraints(button,  0, 9, 9, 4);
+        GridPane.setConstraints(button,  0, 11, 11, 4);
         gridPane.getChildren().add(button);
 
         final CategoryAxis xAxis = new CategoryAxis(); // we are gonna plot against time
@@ -192,12 +204,12 @@ public class GUI extends Application{
 
         lineChart.getData().addAll(hall, elOne, queue, elTwo);
 
-        GridPane.setConstraints(lineChart, 0, 13, 13, 4);
+        GridPane.setConstraints(lineChart, 0, 15, 15, 4);
         gridPane.getChildren().add(lineChart);
 
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
         scheduledExecutorService.scheduleAtFixedRate(() -> {
 
@@ -206,9 +218,9 @@ public class GUI extends Application{
                 Date now = new Date();
 
                 hall.getData().add(new XYChart.Data<>(simpleDateFormat.format(now), elevatorOne.hall.getPeopleInLine()));
-                elOne.getData().add(new XYChart.Data<>(simpleDateFormat.format(now), elevatorOne.getPeopleIn()));
-                queue.getData().add(new XYChart.Data<>(simpleDateFormat.format(now), elevatorOne.elevatorTwo.getPeopleIn()));
-                elTwo.getData().add(new XYChart.Data<>(simpleDateFormat.format(now), elevatorOne.elevatorTwo.queue.getPeopleInLine()));
+                elOne.getData().add(new XYChart.Data<>(simpleDateFormat.format(now), working(elevatorOne.getPeopleIn())));
+                queue.getData().add(new XYChart.Data<>(simpleDateFormat.format(now), ElevatorOne.elevatorTwo.queue.getPeopleInLine()));
+                elTwo.getData().add(new XYChart.Data<>(simpleDateFormat.format(now), working(ElevatorOne.elevatorTwo.getPeopleIn())));
 
                 if (hall.getData().size() > WINDOW_SIZE)
                     hall.getData().remove(0);
@@ -219,7 +231,7 @@ public class GUI extends Application{
                 if (elTwo.getData().size() > WINDOW_SIZE)
                     elTwo.getData().remove(0);
             });
-        }, 0, 1, TimeUnit.SECONDS);
+        }, 0, 950, TimeUnit.MILLISECONDS);
 
         win = new Scene(gridPane, sirka, vyska);
 
@@ -238,5 +250,11 @@ public class GUI extends Application{
         Platform.exit();
         System.exit(0);
 
+    }
+
+    private int working(String pplIn) {
+        if (pplIn.equals("nefunguje"))
+            return 0;
+        else return Integer.parseInt(pplIn);
     }
 }

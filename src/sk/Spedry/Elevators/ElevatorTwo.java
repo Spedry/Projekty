@@ -5,16 +5,18 @@ public class ElevatorTwo extends ElevatorAbs implements Runnable{
     int peopleIn;
     Queue queue;
 
-    public ElevatorTwo(int cap, int time, int limit) {
-        super(cap, time);
+    public ElevatorTwo(int cap, int time, int chance, int repair, int limit) {
+        super(cap, time, chance, repair);
         queue = new Queue(limit);
         Thread threadQueue = new Thread(queue);
         threadQueue.start();
     }
 
-    public void changeVar(int cap, int time, int limit) {
+    public void changeVar(int cap, int time, int chance, int repair, int limit) {
         this.cap = cap;
         this.time = time;
+        this.chance = chance;
+        this.repair = repair;
         queue.changeVar(limit);
     }
 
@@ -28,8 +30,11 @@ public class ElevatorTwo extends ElevatorAbs implements Runnable{
         }
     }
 
-    public int getPeopleIn() {
-        return peopleIn;
+    public String getPeopleIn() {
+        if (working)
+            return String.valueOf(peopleIn);
+        else
+            return "nefunguje";
     }
 
     @Override
@@ -38,7 +43,7 @@ public class ElevatorTwo extends ElevatorAbs implements Runnable{
         while (!exit) {
             if (queue.peopleInLine == 0) {
                 try {
-                    System.out.println("elevatorTwo is waiting");
+                    //System.out.println("elevatorTwo is waiting");
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -46,11 +51,17 @@ public class ElevatorTwo extends ElevatorAbs implements Runnable{
             }
             else {
                 boarTheElevator();
-                System.out.println("ppl in elevatorTwo: " + peopleIn);
+                //System.out.println("ppl in elevatorTwo: " + peopleIn);
                 try {
                     Thread.sleep(time * 1000);
-
                     peopleIn = 0;
+                    if (rand.nextInt(99) + 1 < chance) {
+                        working = false;
+                        //System.out.println("výťah č 2 sa pokazil");
+                        Thread.sleep(repair * 1000);
+                        working = true;
+                        //System.out.println("výťah č 2 sa opravil");
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

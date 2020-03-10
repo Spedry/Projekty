@@ -5,19 +5,21 @@ public class ElevatorOne extends ElevatorAbs implements Runnable{
     int peopleIn;
     Hall hall;
 
-    static ElevatorTwo elevatorTwo = new ElevatorTwo(3, 4, 20);
+    static ElevatorTwo elevatorTwo = new ElevatorTwo(3, 4, 15, 9, 20);
 
-    public ElevatorOne(int cap, int time, int limit, int howMany, int howOften) {
-        super(cap, time);
+    public ElevatorOne(int cap, int time, int chance, int repair, int limit, int howMany, int howOften) {
+        super(cap, time, chance, repair);
         this.working = true;
         hall = new Hall(limit, howMany, howOften);
         Thread threadHall = new Thread(hall);
         threadHall.start();
     }
 
-    public void changeVar(int cap, int time, int limit, int howMany, int howOften) {
+    public void changeVar(int cap, int time, int chance, int repair, int limit, int howMany, int howOften) {
         this.cap = cap;
         this.time = time;
+        this.chance = chance;
+        this.repair = repair;
         hall.changeVar(limit, howMany, howOften);
     }
 
@@ -32,8 +34,11 @@ public class ElevatorOne extends ElevatorAbs implements Runnable{
 
     }
 
-    public int getPeopleIn() {
-        return peopleIn;
+    public String getPeopleIn() {
+        if (working)
+            return String.valueOf(peopleIn);
+        else
+            return "nefunguje";
     }
 
     @Override
@@ -44,7 +49,7 @@ public class ElevatorOne extends ElevatorAbs implements Runnable{
         while (!exit) {
             if (hall.peopleInLine == 0) {
                 try {
-                    System.out.println("elevatorOne is waiting");
+                    //System.out.println("elevatorOne is waiting");
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -52,11 +57,18 @@ public class ElevatorOne extends ElevatorAbs implements Runnable{
             }
             else {
                 boarTheElevator();
-                System.out.println("ppl in elevatorOne: " + peopleIn);
+                //System.out.println("ppl in elevatorOne: " + peopleIn);
                 try {
                     Thread.sleep(time * 1000);
                     elevatorTwo.queue.addInLine(peopleIn);
                     peopleIn = 0;
+                    if(rand.nextInt(99) + 1 < chance) {
+                        working = false;
+                        //System.out.println("výťah č 1 sa pokazil");
+                        Thread.sleep(repair * 1000);
+                        working = true;
+                        //System.out.println("výťah č 1 sa opravil");
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
